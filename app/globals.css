@@ -1,0 +1,29 @@
+@tailwind base; @tailwind components; @tailwind utilities;
+:root, [data-theme="midnight"] { --bg:11 18 32; --fg:232 241 247; --s800:17 28 46; --s900:23 38 58; --s700:41 58 84; --s600:71 90 118; --s400:148 163 184; --s300:176 190 206; --c900:21 184 166; --c600:15 118 110; --c400:21 184 166; --c300:94 226 208; }
+[data-theme="light"] { --bg:246 248 251; --fg:30 41 59; --s800:255 255 255; --s900:241 245 249; --s700:226 232 240; --s600:148 163 184; --s400:71 85 105; --s300:51 65 85; --c900:204 251 241; --c600:15 118 110; --c400:15 118 110; --c300:15 118 110; }
+[data-theme="contrast"] { --bg:0 0 0; --fg:255 255 255; --s800:10 10 10; --s900:24 24 24; --s700:130 130 130; --s600:200 200 200; --s400:235 235 235; --s300:255 255 255; --c900:0 120 110; --c600:0 105 95; --c400:94 234 212; --c300:125 245 225; }
+body { background: rgb(var(--bg)); color: rgb(var(--fg)); font-family: ui-sans-serif, system-ui, sans-serif; }
+:focus-visible { outline: 3px solid #60a5fa; outline-offset: 2px; }
+[data-theme="contrast"] :focus-visible { outline-color: #ffd400; }
+@keyframes rise { from { opacity: 0; transform: translateY(8px); } }
+.sheet { animation: rise .2s ease-out; }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+@media (pointer: coarse) { button, select, summary { min-height: 44px; } }
+.print-only { display: none; }
+@page { size: A4; margin: 18mm; }
+@media print {
+  body { background: #fff !important; color: #000 !important; }
+  .no-print { display: none !important; }
+  .print-only { display: block; position: fixed; bottom: 0; font-size: 9px; color: #555; }
+  main { padding: 0 !important; max-width: none !important; }
+  .report { box-shadow: none !important; padding: 0 !important; max-width: none !important; }
+  .report h3 { break-after: avoid; } .report li, .report blockquote { break-inside: avoid; }
+}
+@media print {
+  .report { display: block; font-size: 11pt; line-height: 1.45; padding-bottom: 14mm !important; }
+  .report, .report * { overflow-wrap: anywhere; word-break: normal; }
+  .report h3 { margin-top: 1.1em; break-after: avoid-page; }
+  .report li, .report blockquote, .report header { break-inside: avoid; page-break-inside: avoid; }
+  .report blockquote { margin-top: 2px; }
+  .report p { orphans: 3; widows: 3; }
+}
