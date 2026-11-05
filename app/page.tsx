@@ -48,7 +48,7 @@ export default function Home() {
     try {
       const r = await fetch("/api/analyze", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ docs: usable.map(({ id, name, text, pages }) => ({ id, name, text, pages })) }) });
       setStage("Validating output and cross-checking quotations…");
-      const j = await r.json(); if (!r.ok) throw new Error(j.error ?? "Analysis failed.");
+      const responseText = await r.text();  let j;  try {   j = JSON.parse(responseText); } catch {   throw new Error(     `Server returned HTTP ${r.status}. ` +     "Please check Vercel Runtime Logs."   ); }  if (!r.ok) {   throw new Error(     j?.error ?? `Analysis failed (HTTP ${r.status}).`   ); }
       setRes(j); setItems(j.nextSteps.map((text: string) => ({ text, done: false, rejected: false, comment: "" }))); setTab("timeline");
     } catch (e) { setErr((e as Error).message); } finally { setBusy(false); setStage(""); }
   };
