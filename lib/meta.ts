@@ -17,12 +17,19 @@ function mapErr(e: unknown): MetaError {
   if (st === 429) return new MetaError("rate_limited", "Meta API rate limit reached. Try again shortly.");
   if ((e as Error).name?.includes("Timeout")) return new MetaError("timeout", "Meta API request timed out.");
   return new MetaError("unavailable", "Meta API is unavailable.");
-}
 async function call(instructions: string, input: string) {
   const c = client();
-  for (let attempt = 0; ; attempt++) {
-    try { return (await c.responses.create({ model: modelName(), instructions, input })).output_text; }
-    catch (e) { const err = mapErr(e); if (attempt < 1 && (err.code === "rate_limited" || err.code === "unavailable")) { await new Promise((r) => setTimeout(r, 1500)); continue; } throw err; }
+
+  try {
+    const response = await c.responses.create({
+      model: modelName(),
+      instructions,
+      input
+    });
+
+    return response.output_text;
+  } catch (error) {
+    throw mapErr(error);
   }
 }
 export async function checkStatus() { await call("Reply with the single word OK.", "ping"); }
