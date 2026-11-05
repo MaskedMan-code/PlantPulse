@@ -8,7 +8,7 @@ export const modelName = () => process.env.META_MODEL || "muse-spark-1.3";
 export function client() {
   const apiKey = process.env.MODEL_API_KEY;
   if (!apiKey) throw new MetaError("not_configured", "MODEL_API_KEY is not set on the server.");
-  return new OpenAI({ apiKey, baseURL: "https://api.meta.ai/v1", timeout: 60000, maxRetries: 0 });
+  return new OpenAI({ apiKey, baseURL: "https://api.meta.ai/v1", timeout: 120000, maxRetries: 0 });
 }
 function mapErr(e: unknown): MetaError {
   if (e instanceof MetaError) return e;
