@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { SourceDoc } from "@/lib/schema";
 import { analyze, MetaError } from "@/lib/meta";
-export const maxDuration = 90;
+export const maxDuration = 180;
 export const runtime = "nodejs";
 const Body = z.object({ docs: z.array(SourceDoc).min(1).max(12) });
 export async function POST(req: Request) {
